@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
   
 function App() {
-  const [length, setLength] = useState(8);
+  const [length, setLength] = useState(0);
   const [numberAllowed, setNumberAllowed] = useState(false);
   const [charAllowed, setCharAllowed] = useState(false);
   const [password, setPassword] = useState('');
@@ -25,6 +25,8 @@ function App() {
       navigator.clipboard.writeText(password)
         .then(() => alert('Password copied to clipboard!'))
         .catch(err => alert('Failed to copy password.'));
+    }else{
+      alert('Generate a password first')
     }
   };
 
@@ -36,14 +38,25 @@ function App() {
           <label className="block text-xl mb-2" htmlFor="length">
             Password Length
           </label>
+
           <input
-            type="number"
+            type="text"
             id="length"
             value={length}
             onChange={(e) => setLength(Number(e.target.value))}
             min="1"
             className="w-full p-2 border border-gray-300 rounded-lg"
           />
+
+          <input
+            type="range"
+            id="length"
+            value={length}
+            onChange={(e) => setLength(Number(e.target.value))}
+            min="1"
+            className="w-full p-2 border border-gray-300 rounded-lg"
+          />
+          
         </div>
         <div className="mb-4">
           <label className="inline-flex items-center">
