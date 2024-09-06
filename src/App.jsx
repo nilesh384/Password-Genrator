@@ -1,10 +1,13 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
   
 function App() {
-  const [length, setLength] = useState(0);
+  const [length, setLength] = useState(1);
   const [numberAllowed, setNumberAllowed] = useState(false);
   const [charAllowed, setCharAllowed] = useState(false);
   const [password, setPassword] = useState('');
+
+  //useRef hook
+  const passwordRef = useRef(null)
 
   const passwordGenerator = useCallback(() => {
     let pass = '';
@@ -20,7 +23,10 @@ function App() {
     setPassword(pass);
   }, [length, numberAllowed, charAllowed]);
 
-  const copyToClipboard = () => {
+  useEffect(()=>{
+    passwordGenerator()}, [length,numberAllowed,charAllowed,passwordGenerator])
+
+  const copyToClipboard = useCallback(() => {
     if (password) {
       navigator.clipboard.writeText(password)
         .then(() => alert('Password copied to clipboard!'))
@@ -28,7 +34,7 @@ function App() {
     }else{
       alert('Generate a password first')
     }
-  };
+  }, [password])
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 flex flex-col items-center justify-center text-white p-4">
@@ -45,6 +51,8 @@ function App() {
             value={length}
             onChange={(e) => setLength(Number(e.target.value))}
             min="1"
+            max='40'
+            ref={passwordRef}
             className="w-full p-2 border border-gray-300 rounded-lg"
           />
 
@@ -54,6 +62,8 @@ function App() {
             value={length}
             onChange={(e) => setLength(Number(e.target.value))}
             min="1"
+            max='40'
+            ref={passwordRef}
             className="w-full p-2 border border-gray-300 rounded-lg"
           />
           
@@ -80,12 +90,12 @@ function App() {
             <span className="ml-2">Include Special Characters</span>
           </label>
         </div>
-        <button
+        {/* <button
           onClick={passwordGenerator}
           className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded mr-4"
         >
           Generate Password
-        </button>
+        </button> */}
         <button
           onClick={copyToClipboard}
           className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
